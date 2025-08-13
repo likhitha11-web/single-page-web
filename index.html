@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FoodDash - Your Favorite Food, Delivered Fast</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Link to your external CSS file -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <div id="app-container" class="max-w-lg mx-auto bg-white shadow-lg rounded-lg overflow-hidden my-4">
+        
+        <!-- Header -->
+        <header class="bg-red-600 text-white p-4 flex items-center justify-between">
+            <h1 class="text-xl font-bold">FoodDash</h1>
+            <div id="cart-icon" class="relative hidden">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                </svg>
+                <span id="cart-count" class="absolute -top-2 -right-2 bg-white text-red-600 text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">0</span>
+            </div>
+        </header>
+
+        <main class="p-6">
+
+            <!-- Screen: Login/Sign Up -->
+            <div id="auth-screen" class="screen active-screen fade-in">
+                <h2 class="text-2xl font-bold mb-4 text-center">Welcome!</h2>
+                <div class="space-y-4">
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                        <input type="email" id="email" value="customer@example.com" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-red-500 focus:border-red-500">
+                    </div>
+                    <div>
+                        <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+                        <input type="password" id="password" value="password123" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-red-500 focus:border-red-500">
+                    </div>
+                    <button id="login-btn" class="w-full bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">Login</button>
+                    <p class="text-center text-sm text-gray-500">or</p>
+                    <button id="signup-btn" class="w-full bg-gray-200 text-gray-800 py-2 px-4 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400">Sign Up</button>
+                </div>
+            </div>
+
+            <!-- Screen: Home (Search & Browse) -->
+            <div id="home-screen" class="screen fade-in">
+                <h2 class="text-2xl font-bold mb-4">Find Your Craving</h2>
+                <div class="relative mb-4">
+                    <input type="text" id="search-bar" placeholder="Search for restaurants..." class="w-full px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-red-500">
+                    <button id="search-btn" class="absolute right-0 top-0 mt-1 mr-1 bg-red-600 text-white rounded-full p-2 hover:bg-red-700">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" /></svg>
+                    </button>
+                </div>
+                <div id="restaurant-list" class="space-y-4">
+                    <!-- Restaurant cards will be injected here -->
+                </div>
+            </div>
+
+            <!-- Screen: Restaurant Menu -->
+            <div id="menu-screen" class="screen fade-in">
+                <button id="back-to-home-btn" class="mb-4 text-red-600 hover:underline">&larr; Back to Restaurants</button>
+                <h2 id="menu-restaurant-name" class="text-2xl font-bold mb-4"></h2>
+                <div id="menu-items" class="space-y-3">
+                    <!-- Menu items will be injected here -->
+                </div>
+            </div>
+
+            <!-- Screen: View Cart & Checkout -->
+            <div id="cart-screen" class="screen fade-in">
+                <button id="back-to-menu-btn" class="mb-4 text-red-600 hover:underline">&larr; Back to Menu</button>
+                <h2 class="text-2xl font-bold mb-4">Your Cart</h2>
+                <div id="cart-items" class="space-y-4 mb-4">
+                    <!-- Cart items will be injected here -->
+                </div>
+                <div class="border-t pt-4">
+                    <div class="flex justify-between font-bold text-lg">
+                        <span>Total:</span>
+                        <span id="cart-total">$0.00</span>
+                    </div>
+                    <button id="checkout-btn" class="mt-4 w-full bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700">Proceed to Checkout</button>
+                </div>
+            </div>
+
+            <!-- Screen: Confirm Address -->
+            <div id="address-screen" class="screen fade-in">
+                <h2 class="text-2xl font-bold mb-4">Confirm Delivery Address</h2>
+                <div class="space-y-4">
+                    <textarea id="delivery-address" class="w-full p-2 border rounded-md" rows="3">123 Foodie Lane, Flavor Town, USA</textarea>
+                    <button id="confirm-address-btn" class="w-full bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700">Use this Address</button>
+                </div>
+            </div>
+
+            <!-- Screen: Select Payment Method -->
+            <div id="payment-screen" class="screen fade-in">
+                <h2 class="text-2xl font-bold mb-4">Select Payment Method</h2>
+                <div id="payment-options" class="space-y-3">
+                    <label class="flex items-center p-3 border rounded-md cursor-pointer hover:bg-gray-100">
+                        <input type="radio" name="payment" value="credit-card" class="h-4 w-4 text-red-600 border-gray-300 focus:ring-red-500" checked>
+                        <span class="ml-3">Credit Card</span>
+                    </label>
+                    <label class="flex items-center p-3 border rounded-md cursor-pointer hover:bg-gray-100">
+                        <input type="radio" name="payment" value="paypal" class="h-4 w-4 text-red-600 border-gray-300 focus:ring-red-500">
+                        <span class="ml-3">PayPal</span>
+                    </label>
+                    <label class="flex items-center p-3 border rounded-md cursor-pointer hover:bg-gray-100">
+                        <input type="radio" name="payment" value="cod" class="h-4 w-4 text-red-600 border-gray-300 focus:ring-red-500">
+                        <span class="ml-3">Cash on Delivery</span>
+                    </label>
+                </div>
+                <button id="process-payment-btn" class="mt-6 w-full bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700">Place Order</button>
+            </div>
+
+            <!-- Screen: Order Confirmation -->
+            <div id="confirmation-screen" class="screen fade-in text-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-green-500 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <h2 class="text-2xl font-bold mb-2">Payment Successful!</h2>
+                <p class="text-gray-600 mb-4">Your order has been placed.</p>
+                <p class="mb-1">Order ID: <span id="order-id" class="font-mono"></span></p>
+                <p class="text-sm text-gray-500 mb-6">A confirmation has been sent to your email.</p>
+                <button id="track-order-btn" class="w-full bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700">Track Your Order</button>
+            </div>
+
+            <!-- Screen: Live Order Tracking -->
+            <div id="tracking-screen" class="screen fade-in">
+                <h2 class="text-2xl font-bold mb-4">Live Order Tracking</h2>
+                <div class="space-y-6">
+                    <div id="tracking-status-1" class="flex items-center opacity-50">
+                        <div class="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center text-white font-bold">✓</div>
+                        <span class="ml-4">Order Confirmed</span>
+                    </div>
+                    <div id="tracking-status-2" class="flex items-center opacity-50">
+                        <div class="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center text-white font-bold">✓</div>
+                        <span class="ml-4">Preparing Food</span>
+                    </div>
+                    <div id="tracking-status-3" class="flex items-center opacity-50">
+                        <div class="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center text-white font-bold">✓</div>
+                        <span class="ml-4">Out for Delivery</span>
+                    </div>
+                    <div id="tracking-status-4" class="flex items-center opacity-50">
+                        <div class="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center text-white font-bold">✓</div>
+                        <span class="ml-4">Food Delivered</span>
+                    </div>
+                </div>
+                 <button id="new-order-btn" class="mt-8 w-full bg-gray-200 text-gray-800 py-2 px-4 rounded-md hover:bg-gray-300 hidden">Place Another Order</button>
+            </div>
+            
+            <!-- Message Box -->
+            <div id="message-box" class="hidden fixed bottom-4 right-4 bg-gray-800 text-white p-4 rounded-lg shadow-lg">
+                <p id="message-text"></p>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Link to your external JavaScript file -->
+    <script src="script.js"></script>
+</body>
+</html>
